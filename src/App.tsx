@@ -1,30 +1,58 @@
 import React from "react";
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <div>Partai</div>
-        <Partai partai={"Partai Demokrat Indonesia Perjuangan"} />
-      </React.Fragment>
-    );
-  }
+interface Data {
+  name: string;
+  username: string;
+  email: string;
 }
 
-class Partai extends React.Component<{ partai?: string }, { value: string }> {
-  render() {
-    // destructured props
-    const { partai } = this.props;
+interface State {
+  data: Data[] | null;
+}
 
-    // default props
-    // const { partai = "PDIP" } = this.props;
+export default class App extends React.Component<{ value?: string }, State> {
+  constructor(props: { value: "" }) {
+    super(props);
+    this.state = {
+      data: null,
+    };
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        const dataArray = Array.isArray(data) ? data : [data];
+        this.setState({ data: dataArray });
+      })
+      .catch((error) => {
+        alert(`Error fetching: ${error}`);
+      });
+  }
+
+  render() {
+    const { data } = this.state;
 
     return (
-      <>
+      <React.Fragment>
         <div>
-          <h1>{partai}</h1>
+          {data &&
+            data.map((data) => (
+              <div>
+                <h1>{data?.name}</h1>
+                <h3>{data?.username}</h3>
+                <p>{data?.email}</p>
+                <hr />
+              </div>
+            ))}
         </div>
-      </>
+      </React.Fragment>
     );
   }
 }
