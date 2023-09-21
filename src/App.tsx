@@ -1,22 +1,39 @@
-import React from "react";
-import Dukungan from "./components/Dukungan";
+import React, { Component } from "react";
 
-class App extends React.Component {
+// Variables
+// let doksli: string = "Kaela Esport";
+// console.log(doksli);
+
+// function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+//   event.preventDefault();
+
+//   doksli = "Kaela dulunya player Esport";
+//   console.log(doksli);
+// }
+
+// ngebangun tipe data dari object state nya
+type State = {
+  doksli: string;
+};
+
+export default class App extends Component<State> {
+  state = {
+    doksli: "Kaela Esport",
+  };
+
+  updateDoksli = () => {
+    this.setState({
+      doksli: "Kaela dulunya player Esport",
+    });
+  };
+
   render() {
     return (
       <React.Fragment>
-        <h1>Pace Kobo</h1>
-        <Doxxing />
-        <Dukungan />
+        <div>{this.state.doksli}</div>
+
+        <button onClick={this.updateDoksli}>Beri Informasi Baru!</button>
       </React.Fragment>
     );
   }
 }
-
-class Doxxing extends React.Component {
-  render() {
-    return <h1>Pace Kobo aseli papua</h1>;
-  }
-}
-
-export default App;
